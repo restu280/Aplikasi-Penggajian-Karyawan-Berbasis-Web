@@ -1,0 +1,159 @@
+<?php 
+session_start();
+if(!isset($_SESSION['session_username'])){
+    header("location:login.php");
+    exit();
+}
+
+?>
+
+<!-- index.php -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Aplikasi Penggajian Karyawan</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+    body {
+            background-image: url('assets/images/forest.jpg'); /* Ganti 'nama_gambar.jpg' dengan nama gambar Anda */
+            background-size: cover; /* Untuk mengisi seluruh area latar belakang */
+            background-repeat: no-repeat; /* Untuk menghindari pengulangan gambar */
+            background-attachment: fixed; /* Untuk menjaga gambar tetap pada tempatnya saat menggulir halaman */
+        }
+
+    /* Menambahkan gaya lainnya */
+    /* ... */
+
+    .date {
+      text-align: right;
+    }
+    
+    .navbar {
+      background-color: #333;
+      overflow: hidden;
+    }
+    
+    .navbar a {
+      float: left;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    
+    .navbar a.active {
+      background-color: #4CAF50;
+      color: white;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+    }
+    
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<div class="navbar">
+    <a class="active" href="logout.php">Logout</a>
+    <a class="active" href="kehadiran.php">Kehadiran</a>
+  </div>
+  
+  <h1>WARUNG PECEL SAMBEL DOBLEH</h1>
+  <div class="container">
+    <b>
+    <div class="date" id="real-time-clock">
+      <?php
+        $date = date('l, d F Y');
+        echo $date;
+      ?>
+      |
+      <?php
+        $time = date('H:i:s');
+        echo $time;
+      ?>
+    </div>
+    <script>
+      function updateClock() {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+
+        // Formatting the time to ensure leading zeros
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        var timeString = hours + ":" + minutes + ":" + seconds;
+        document.getElementById("real-time-clock").innerHTML = "<?php echo $date; ?>" + " | " + timeString;
+      }
+
+      // Update the clock every second
+      setInterval(updateClock, 1000);
+    </script>
+    </b>
+    <h2 id="tambah">Tambah Data Karyawan</h2>
+    <!-- Form tambah data karyawan -->
+    <form action="tambah.php" method="POST">
+      <!-- Input fields -->
+      <input type="text" name="id_karyawan" placeholder="Masukkan No. Induk" required>
+      <input type="text" name="nama_karyawan" placeholder="Masukkan Nama" required>
+      <select name="jabatan" required style="height: 35px; width: 100px;">
+        <option value="">Pilih Jabatan</option>
+        <option value="Dapur">Dapur</option>
+        <option value="Kasir">Kasir</option>
+        <option value="Pelayan">Pelayan</option>
+      </select>
+      <input type="text" name="gaji_pokok" placeholder="Masukkan Gaji" required>
+      <!-- Submit button -->
+      <button type="submit">Tambah</button>
+    </form>
+    <br>
+    <!-- Button untuk cetak laporan gaji -->
+    <button type="button" onclick="location.href='generate_laporan.php'" class="btn-cetak">
+  <i class="fas fa-download"></i> Cetak Laporan Gaji
+</button>
+    <h2 id="laporan">Data Karyawan</h2>
+    <!-- Tabel data karyawan -->
+    <table>
+      <tr>
+        <th>No. Induk</th>
+        <th>Nama Karyawan</th>
+        <th>Jabatan</th>
+        <th>Gaji Pokok</th>
+        <th>PPH 5%</th>
+        <th>Total Gaji</th>
+        <th>Aksi</th>
+      </tr>
+      <?php include 'data.php'; ?>
+    </table>
+    <br>
+  </div>
+</body>
+</html>

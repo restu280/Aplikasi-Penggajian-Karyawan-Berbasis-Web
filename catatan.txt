@@ -1,0 +1,5 @@
+// Mengambil data karyawan dari database
+$servername = "sql312.infinityfree.com";
+$username = "if0_34782235";
+$password = "eicfWmvFhx";
+$dbname = "if0_34782235_gajian";
