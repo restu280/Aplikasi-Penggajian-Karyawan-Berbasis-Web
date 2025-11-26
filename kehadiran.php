@@ -24,7 +24,7 @@ if (!isset($_SESSION['session_username'])) {
 
 <body>
     <div class="navbar">
-        <a href="index.php">Kembali</a>
+        <a href="index.html">Kembali</a>
     </div>
 
     <h1>WARUNG PECEL SAMBEL DOBLEH</h1>
